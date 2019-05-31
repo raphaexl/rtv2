@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 10:47:27 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/05/29 20:42:49 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/05/31 10:52:05 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 typedef enum	e_type
 {
 	NONE = 0, SPHERE, CONE, CYLINDRE, BOX, PLANE, DISK, TORUS, CUBE, TRIANGLE,
-	PARALLELOGRAM
+	PARALLELOGRAM, RING
 }				t_type;
 
 typedef struct	s_ray
@@ -132,6 +132,14 @@ typedef struct	s_parallelogram
 	float		t;
 }				t_parallelogram;
 
+typedef struct	s_ring
+{
+	float		radius;
+	float		radius2;
+	float		height;
+	t_vec3		v;
+}				t_ring;
+
 typedef union	s_union
 {
 	t_sphere		sphere;
@@ -144,6 +152,7 @@ typedef union	s_union
 	t_cube			cube;
 	t_triangle		triangle;
 	t_parallelogram	para;
+	t_ring			ring;
 }				t_union;
 
 typedef	struct	s_o

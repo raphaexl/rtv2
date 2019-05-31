@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:57:06 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/05/29 20:18:09 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/05/31 10:51:27 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,32 @@ t_object		*ft_plane_read(int fd)
 	item.material = ft_material_read(fd);
 	return (ft_object_new(PLANE, &item));
 }
+
+t_object		*ft_ring_read(int fd)
+{
+	char		*line;
+	t_object	item;
+
+	item.name = "RING";
+	item.pos = ft_vec3_read(fd);
+	item.translate = ft_vec3_read(fd);
+	item.rotate = ft_vec3_read(fd);
+	item.translate = ft_translate_vec3(item.translate, item.pos, 0);
+	item.pos = (t_vec3){0.0, 0.0, 0.0};
+	if (ft_get_next_line(fd, &line) == 1 && line)
+		item.e.ring.radius = ft_atof(line);
+	else
+		ft_print_error("ring radius :)");
+	item.e.ring.radius2 = item.e.ring.radius * item.e.ring.radius;
+	if (ft_get_next_line(fd, &line) == 1 && line)
+		item.e.ring.height = ft_atof(line);
+	else
+		ft_print_error("ring height :)");
+	item.e.ring.v = ft_vec3_normalized(ft_vec3_read(fd));
+	item.material = ft_material_read(fd);
+	return (ft_object_new(RING, &item));
+}
+
 
 t_object		*ft_disk_read(int fd)
 {

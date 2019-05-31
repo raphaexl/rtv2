@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:49:52 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/05/29 20:47:00 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/05/31 10:50:50 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_vec3		ft_vec3_read(int fd);
 t_col3		ft_col3_read(int fd);
 t_material	ft_material_read(int fd);
 t_object	*ft_sphere_read(int fd);
+t_object	*ft_ring_read(int fd);
 t_object	*ft_cylindre_read(int fd);
 t_object	*ft_plane_read(int fd);
 t_object	*ft_cone_read(int fd);
@@ -110,6 +111,11 @@ t_object	*ft_cone_new(void);
 t_vec3		ft_normal_cone(t_cone *cone, t_vec3 p);
 int			ft_cone_intersect(t_cone *s, t_ray *r, float *t);
 int			ft_cone_compute(t_object *p, t_intersect *in);
+
+t_object	*ft_ring_new(void);
+t_vec3		ft_normal_rint(t_ring *ring, t_vec3 p);
+int			ft_ring_intersect(t_ring *ring, t_ray *r, float *t);
+int			ft_ring_compute(t_object *p, t_intersect *in);
 
 t_object	*ft_cylindre_new(void);
 t_vec3		ft_normal_cylindre(t_cylinder *cylindre, t_vec3 p);

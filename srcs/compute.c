@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:50:51 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/05/28 20:01:00 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/05/31 10:50:19 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int		ft_scene_intersect(t_scene *s, t_intersect *in)
 			hit = 1;
 		else if (p->type == PARALLELOGRAM && ft_parallelogram_compute(p, in))
 			hit = 1;
+		else if (p->type == RING && ft_ring_compute(p, in))
+			hit = 1;
 		p = p->next;
 	}
 	return (hit);
@@ -84,6 +86,8 @@ int		ft_scene_intersectl(t_scene *s, t_intersect *in)
 		else if (p->type == TRIANGLE && ft_triangle_intersect(&p->e.triangle, &r, &in->t))
 			return (1);
 		else if (p->type == PARALLELOGRAM && ft_parallelogram_intersect(&p->e.para, &r, &in->t))
+			return (1);
+		else if (p->type == RING && ft_ring_intersect(&p->e.ring, &r, &in->t))
 			return (1);
 		p = p->next;
 	}

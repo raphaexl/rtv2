@@ -6,12 +6,13 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:51:06 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/05/29 20:30:46 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/05/31 21:53:04 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rt.h"
 
+static int		ft_cone_cap(t_ray *r, float *t, t_vec3 pos, t_vec3 n);
 static int		ft_min_ray(float t1, float t2, float *t)
 {
 	if (((t1 < t2 || t2 < 0.001) && t1 > 0.1) && (t1 < *t))
@@ -63,6 +64,7 @@ int				ft_cone_compute(t_object *p, t_intersect *in)
 {
 	t_ray	r;
 	float	m;
+	int		ret;
 
 	r = in->ray;
 	r.start = ft_scale_vec3(r.start, p->scale, -1);
@@ -70,15 +72,20 @@ int				ft_cone_compute(t_object *p, t_intersect *in)
 	r.start = ft_translate_vec3(r.start, p->translate, -1);
 	r.dir = ft_scale_vec3(r.dir, p->scale, -1);
 	r.dir = ft_rotate_vec3(r.dir, p->rotate, -1);
-	if (!ft_cone_intersect(&p->e.cone, &r, &in->t))
-		return (0);
 	in->current = p;
+	if (!(ret = ft_cone_intersect(&p->e.cone, &r, &in->t)))
+		return (0);
 	in->p = ft_vec3_sum(r.start, ft_vec3_kmult(in->t, r.dir));
-	m = ft_vec3_dot(r.dir, p->e.cylinder.v) * in->t;
-	m += ft_vec3_dot(r.start, p->e.cylinder.v);
-//	in->n = ft_normal_cone(&p->e.cone, in->p);
-	in->n = ft_vec3_sub(in->p, ft_vec3_kmult(m, p->e.cone.v));
-	//in->n = ft_vec3_normalized(ft_vec3_sub(in->p, ft_vec3_kmult(m, p->e.cone.v)));
+	if (ret < 0)
+		in->n = ft_vec3_kmult(-1.0, p->e.cone.v);
+	else if (ret > 1)
+		in->n = p->e.cone.v;
+	else
+	{
+		m = ft_vec3_dot(r.dir, p->e.cone.v) * in->t;
+		m += ft_vec3_dot(r.start, p->e.cone.v);
+		in->n = ft_vec3_sub(in->p, ft_vec3_kmult(m, p->e.cone.v));
+	}
 	in->p = ft_translate_vec3(in->p, p->translate, 0);
 	in->p = ft_rotate_vec3(in->p, p->rotate, 0);
 	in->p = ft_scale_vec3(in->p, p->scale, 0);
@@ -127,35 +134,60 @@ int				ft_cone_intersect(t_cone *c, t_ray *r, float *t)
 			return (0);
 		else
 		{
-			float th = t0 + (t1 - t0) * (m0 + c->height) / (m0 - m1);
-			if (th < 1e-6 || th > *t)
-				return (0);
-			 *t = th;
+		/*	if (ft_cone_cap(r, t, ft_vec3_kmult(-c->height, c->v), ft_vec3_kmult(-1, c->v)))
+				return (-1);*/
 			return (1);
 		}
 	}
 	else if (m0 >= -c->height && m0 <= c->height)
 	{
+		return (ft_min_ray(t0, t1, t));
 		if (t0 < 1e-6 || t0 > *t)
 			return (0);
 		*t = t0;
 		return (1);
 	}
+	/*else if (m1 >= -c->height && m1 <= c->height)
+	{
+		return (ft_min_ray(t0, t1, t));
+		if (t1 < 1e-6 || t1 > *t)
+			return (0);
+		*t = t1;
+		return (1);
+	}*/
 	else if (m0 > c->height)
 	{
 		if (m1 > c->height)
 			return (0);
 		else
 		{
-			float th = t0 + (t1 - t0) * (m0 - c->height) / (m0 - m1);
-			if (th < 1e-6 || th > *t)
-				return (0);
-			*t = th;
-			return (1);
+			return (2);
+			if (ft_cone_cap(r, t, ft_vec3_kmult(c->height / 2, c->v), c->v))
+				return (2);
 		}
 	}
 	return (0);
+}
 
+int			ft_cone_cap(t_ray *r, float *t, t_vec3 pos, t_vec3 n)
+{
+	float	ddn;
+	float	t1;
+	t_vec3	dist;
+
+	ddn = ft_vec3_dot(r->dir, n);
+	if (ddn == 1.0e-6)
+		return (0);
+	dist = ft_vec3_sub(pos, r->start);
+	t1 = (ft_vec3_dot(dist, n)) / ddn;
+	if (t1 < *t && t1 > 1e-6)
+	{
+		*t = t1;
+		if (ddn > 1e-6)
+			return (2);
+		return (1);
+	}
+	return (0);
 }
 
 

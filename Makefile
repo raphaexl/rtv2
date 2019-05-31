@@ -6,7 +6,7 @@
 #    By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/28 22:15:58 by ebatchas          #+#    #+#              #
-#    Updated: 2019/05/29 20:43:25 by ebatchas         ###   ########.fr        #
+#    Updated: 2019/05/31 10:52:48 by ebatchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ SRC=$(SRCDIR)/main.c\
 	$(SRCDIR)/sphere.c\
 	$(SRCDIR)/cone.c\
 	$(SRCDIR)/cylindre.c\
+	$(SRCDIR)/ring.c\
 	$(SRCDIR)/plane.c\
 	$(SRCDIR)/disque.c\
 	$(SRCDIR)/box.c\
@@ -101,6 +102,7 @@ OBJ=$(LIBDIR)/main.o\
 	$(LIBDIR)/sphere.o\
 	$(LIBDIR)/cone.o\
 	$(LIBDIR)/cylindre.o\
+	$(LIBDIR)/ring.o\
 	$(LIBDIR)/plane.o\
 	$(LIBDIR)/disque.o\
 	$(LIBDIR)/box.o\

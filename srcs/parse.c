@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:54:42 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/05/29 17:44:15 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/05/31 10:54:54 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void		ft_parse_file(t_scene *s, int fd)
 			ft_object_push_back(&s->obj, ft_triangle_read(fd));
 		else if (!ft_strcmp(line, "parallelogram"))
 			ft_object_push_back(&s->obj, ft_parallelogram_read(fd));
+		else if (!ft_strcmp(line, "ring"))
+			ft_object_push_back(&s->obj, ft_ring_read(fd));
 		else if (!ft_strcmp(line, "light"))
 			ft_light_push_back(&s->light, ft_light_read(fd));
 		else
