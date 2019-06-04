@@ -12,6 +12,8 @@
 
 #include "../includes/rt.h"
 
+static float   ft_get_ring_caps(float t, t_ray *r, t_vec3 va, t_vec3 v);
+
 static int		ft_min_ray(float t1, float t2, float *t)
 {
 	if (((t1 < t2 || t2 < 0.001) && t1 > 0.1) && (t1 < *t))
@@ -86,7 +88,49 @@ int				ft_ring_compute(t_object *p, t_intersect *in)
 	return (1);
 }
 
+
 int				ft_ring_intersect(t_ring *c, t_ray *r, float *t)
+{
+	t_delta	d;
+	t_vec3	dist;
+	t_vec3  pa, va, alpha, beta;
+float  t1, t2;
+
+	pa = (t_vec3){0.0, 0.0, 0.0};
+	va = ft_vec3_normalized(ft_vec3_sub(pa, c->v));
+	dist = ft_vec3_sub(r->start, pa);
+	alpha = ft_vec3_sub(r->dir, ft_vec3_kmult(ft_vec3_dot(r->dir, va), va));
+	beta = ft_vec3_sub(dist, ft_vec3_kmult(ft_vec3_dot(dist, va), va));
+	d.a = (alpha.x * alpha.x + alpha.y * alpha.y + alpha.z * alpha.z);
+	d.b = 2.0 * (alpha.x * beta.x + alpha.y * beta.y + alpha.z * beta.z);
+	d.c = (beta.x * beta.x + beta.y * beta.y + beta.z * beta.z) - c->radius2;
+	d.delta = d.b * d.b - 4.0 * d.a * d.c;
+	if (d.delta < 0.0)
+		return (0);
+	d.delta = sqrt(d.delta);
+	t1 = ft_get_ring_caps((-d.b + d.delta) / (2.0 * d.a), r, va, c->v);
+	t2 = ft_get_ring_caps((-d.b - d.delta) / (2.0 * d.a), r, va, c->v);		
+	return (ft_min_ray(t1,
+				t2, t));
+}
+
+float   ft_get_ring_caps(float t, t_ray *r, t_vec3 va, t_vec3 v)
+{
+t_vec3 q;
+float	m1, m2;
+
+if (t < 0)
+return (INFINITY);
+q = ft_vec3_sum(r->start, ft_vec3_kmult(t, r->dir));
+m1 = ft_vec3_dot(va, q);
+m2 = ft_vec3_dot(va, ft_vec3_sub(q, v));
+if (m1 < 0.0 && m2 > 0)
+return (t);
+return (INFINITY);
+}
+
+
+int				ft_ring_intersect2(t_ring *c, t_ray *r, float *t)
 {
 	t_delta	d;
 	t_vec3	x;
@@ -140,24 +184,3 @@ int				ft_ring_intersect(t_ring *c, t_ray *r, float *t)
 }
 
 
-
-
-/*int				ft_ring_intersect(t_ring *c, t_ray *r, float *t)
-{
-	t_delta	d;
-	t_vec3	dist;
-	t_vec3	alpha, beta;
-
-	dist = r->start;
-	alpha = ft_vec3_sub(r->dir, ft_vec3_kmult(ft_vec3_dot(r->dir, c->v), c->v));
-	beta = ft_vec3_sub(dist, ft_vec3_kmult(ft_vec3_dot(dist, c->v), c->v));
-	d.a = (alpha.x * alpha.x + alpha.y * alpha.y + alpha.z * alpha.z);
-	d.b = 2.0 * (alpha.x * beta.x + alpha.y * beta.y + alpha.z * beta.z);
-	d.c = (beta.x * beta.x + beta.y * beta.y + beta.z * beta.z) - c->radius2;
-	d.delta = d.b * d.b - 4.0 * d.a * d.c;
-	if (d.delta < 0.0)
-		return (0);
-	d.delta = sqrt(d.delta);
-	return (ft_min_ray((-d.b + d.delta) / (2.0 * d.a),
-				(-d.b - d.delta) / (2.0 * d.a), t));
-}*/

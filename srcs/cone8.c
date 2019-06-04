@@ -13,7 +13,6 @@
 #include "../includes/rt.h"
 
 static int		ft_cone_cap(t_ray *r, float *t, t_vec3 pos, t_vec3 n);
-float   ft_get_cone_caps(float t, t_ray *r, t_vec3 va, t_vec3 v);
 static int		ft_min_ray(float t1, float t2, float *t)
 {
 	if (((t1 < t2 || t2 < 0.001) && t1 > 0.1) && (t1 < *t))
@@ -96,56 +95,7 @@ int				ft_cone_compute(t_object *p, t_intersect *in)
 	return (1);
 }
 
-
 int				ft_cone_intersect(t_cone *c, t_ray *r, float *t)
-{
-	t_delta	d;
-	t_vec3 pa;
-	t_vec3 va;
-	t_vec3  deltap;
-	t_vec3 a, b;
-	float t1, t2;
-	float		anglesin;
-	float		anglecos;
-
-	anglecos = pow(cos(c->angle), 2.0);
-	anglesin = pow(sin(c->angle), 2.0);
-	pa = (t_vec3){0.0, 0.0, 0.0};
-	va = ft_vec3_normalized(ft_vec3_sub(pa, c->v));
-	deltap = ft_vec3_sub(r->start, pa);
-	a = ft_vec3_sub(r->dir, ft_vec3_kmult(ft_vec3_dot(r->dir, va), va));
-	b = ft_vec3_sub(deltap, ft_vec3_kmult(ft_vec3_dot(deltap, va), va));
-	
-	d.a = anglecos * ft_vec3_dot(a, a) - anglesin * ft_vec3_dot(r->dir, va) * ft_vec3_dot(r->dir, va);
-	d.b = 2.0 * anglecos * ft_vec3_dot(a, b) - 2.0 * anglesin * ft_vec3_dot(r->dir, va) * ft_vec3_dot(deltap, va); 
-        d.c = anglecos * ft_vec3_dot(b, b) -anglesin * ft_vec3_dot(deltap, va) * ft_vec3_dot(deltap, va);
-	d.delta = d.b * d.b - 4.0 * d.a * d.c;
-	if (d.delta < 0.00000001)
-		return (0);
-	d.delta = sqrt(d.delta);
-        t1 = ft_get_cone_caps((-d.b + d.delta) / (2.0 * d.a), r, va, c->v);
-	t2 = ft_get_cone_caps((-d.b - d.delta) / (2.0 * d.a), r, va, c->v);		
-	return (ft_min_ray(t1,
-				t2, t));
-}
-
-float   ft_get_cone_caps(float t, t_ray *r, t_vec3 va, t_vec3 v)
-{
-t_vec3 q;
-float	m1, m2;
-
-if (t < 0)
-return (INFINITY);
-q = ft_vec3_sum(r->start, ft_vec3_kmult(t, r->dir));
-m1 = ft_vec3_dot(va, q);
-m2 = ft_vec3_dot(va, ft_vec3_sub(q, v));
-if (m1 < 0.0 && m2 > 0)
-return (t);
-return (INFINITY);
-}
-
-
-int				ft_cone_intersect2(t_cone *c, t_ray *r, float *t)
 {
 	t_delta	d;
 	t_vec3	x;
@@ -241,4 +191,27 @@ int			ft_cone_cap(t_ray *r, float *t, t_vec3 pos, t_vec3 n)
 }
 
 
+/*
+int				ft_cone_intersect(t_cone *c, t_ray *r, float *t)
+{
+	t_delta		d;
+	t_vec3		dist;
+	float		anglesin;
+	float		anglecos;
 
+	anglecos = pow(cos(c->angle), 2.0);
+	anglesin = pow(sin(c->angle), 2.0);
+	dist = r->start;
+	d.a = anglecos * (r->dir.z * r->dir.z + r->dir.x * r->dir.x)
+		- anglesin * (r->dir.y * r->dir.y);
+	d.b = 2.0 * (anglecos * (dist.z * r->dir.z + dist.x * r->dir.x)
+			- anglesin * (dist.y * r->dir.y));
+	d.c = anglecos * (dist.z * dist.z + dist.x * dist.x)
+		- anglesin * (dist.y * dist.y);
+	d.delta = d.b * d.b - 4.0 * d.a * d.c;
+	if (d.delta < 0.00000001)
+		return (0);
+	d.delta = sqrt(d.delta);
+	return (ft_min_ray((-d.b + d.delta) / (2.0 * d.a),
+				(-d.b - d.delta) / (2.0 * d.a), t));
+}*/
