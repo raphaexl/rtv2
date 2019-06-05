@@ -17,7 +17,7 @@
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
-# define MAX_DEPTH 5
+# define MAX_DEPTH 50
 # define NB_OPTIONS 25
 # define DELTA_TRANS 1.5
 # define DELTA_SCALE 1.0

@@ -27,6 +27,9 @@ typedef	struct	s_camera
 	t_vec3		horiz;
 	t_vec3		vert;
 	t_vec3		low_left;
+	float		aperture;
+	float		focus_dist;
+	float		lens_radius;
 	float		ratio;
 	float		fov;
 	float		h;

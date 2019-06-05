@@ -32,7 +32,8 @@ int			ft_lambertian_sc(t_intersect *in, t_col3 *att)
 
 	in->ray.start = in->p;
 	target = ft_vec3_sum(ft_vec3_sum(in->p, in->n), ft_random_unit());
-	*att = ft_col3_sum(*att, in->current->material.diffuse);
+	//*att = ft_col3_sum(*att, in->current->material.diffuse);
+	*att = in->current->material.diffuse;
 	in->ray.dir = ft_vec3_sub(target, in->p);
 	return (1);
 }
@@ -48,31 +49,48 @@ int			ft_metal_sc(t_intersect *in, t_col3 *att)
 	return (ft_vec3_dot(reflected, in->n) > 0);
 }
 
+float	ft_schlick(float cosine, float ref_idx)
+{
+	float ro = (1.0 - ref_idx) / (1.0 + ref_idx);
+	ro = ro * ro;
+	return (ro + (1.0 - ro) * pow((1.0 - cosine), 5.0));
+}
+
 int			ft_dielectric_sc(t_intersect *in, t_col3 *att, float ref_idx)
 {
-	t_vec3	reflected;
-	t_vec3	refracted;
-	t_vec3	out_n;
-	float	ni_over_nt;
+	t_vec3 reflected;
+	t_vec3 refracted;
+	t_vec3 out_n;
+	float ni_over_nt;
+	float  cosine;
+	float	reflect_prob;
 
 	*att = (t_col3){1.0, 1.0, 1.0};
-	in->ray.start = in->p;
+	in->ray.start = in->p;    
 	reflected = ft_reflect(in->ray.dir, in->n);
-	if ((in->ray.dir.x * in->n.x + in->ray.dir.y * in->n.y +
-				in->ray.dir.z * in->n.z) > 0.001)
+	if ((in->ray.dir.x * in->n.x + in->ray.dir.y * in->n.y + in->ray.dir.z * in->n.z) > 0.001)
 	{
 		out_n = (t_vec3){-in->n.x, -in->n.y, -in->n.z};
 		ni_over_nt = ref_idx;
+		cosine = ref_idx * ft_vec3_dot(in->ray.dir, in->n) * 1.0 / ft_vec3_norm(in->ray.dir);
 	}
 	else
 	{
 		out_n = (t_vec3){in->n.x, in->n.y, in->n.z};
 		ni_over_nt = 1.0 / ref_idx;
+		cosine = -ft_vec3_dot(in->ray.dir, in->n) * 1.0 / ft_vec3_norm(in->ray.dir);
 	}
 	if (ft_refract(in->ray.dir, out_n, ni_over_nt, &refracted))
-		in->ray.dir = refracted;
+		reflect_prob = ft_schlick(cosine, ref_idx);
 	else
+	{
+		reflect_prob = 1.0;
+		//in->ray.dir = reflected;
+	}
+	if (ft_rand48() < reflect_prob)
 		in->ray.dir = reflected;
+	else
+		in->ray.dir = refracted;
 	return (1);
 }
 
