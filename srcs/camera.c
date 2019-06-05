@@ -6,12 +6,28 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:50:25 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/05/31 19:58:08 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/06/05 20:33:25 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rt.h"
-t_vec3		ft_random_unit(void);
+
+t_vec3		ft_random_unit_disk(void);
+
+t_vec3		ft_random_unit_disk(void)
+{
+	t_vec3	p;
+
+	p = (t_vec3){1.0, 1.0, 0.0};
+	while (p.x * p.x + p.y * p.y  >= 1.0)
+	{
+		p = ft_vec3_sub(ft_vec3_kmult(2.0,
+					ft_vec3(ft_rand48(), ft_rand48(), 0.0)),
+				ft_vec3(1.0, 1.0, 0.0));
+	}
+	return (p);
+}
+
 
 t_camera	ft_camera_new(t_vec3 eye, t_vec3 at, t_vec3 up, float a)
 {
@@ -27,12 +43,12 @@ t_camera	ft_camera_new(t_vec3 eye, t_vec3 at, t_vec3 up, float a)
 	cam.fov = a;
 	cam.h = tan((cam.fov * M_PI * (1.0 / 180.0)) / 2.0);
 	cam.w = cam.ratio * cam.h;
-	cam.dir = ft_vec3_normalized(ft_vec3_sub(at, eye));
-	cam.u = ft_vec3_normalized(ft_vec3_cross(cam.dir, up));
-	cam.v = ft_vec3_cross(cam.u, cam.dir);
+	cam.dir = ft_vec3_normalized(ft_vec3_sub(eye, at));
+	cam.u = ft_vec3_normalized(ft_vec3_cross(up, cam.dir));
+	cam.v = ft_vec3_cross(cam.dir, cam.u);
 	cam.low_left = ft_vec3_sub(cam.pos, ft_vec3_sum(ft_vec3_kmult(cam.h * cam.focus_dist,
 					cam.v), ft_vec3_kmult(cam.w * cam.focus_dist, cam.u)));
-	cam.low_left = ft_vec3_sum(cam.low_left, ft_vec3_kmult(cam.focus_dist, cam.dir));
+	cam.low_left = ft_vec3_sub(cam.low_left, ft_vec3_kmult(cam.focus_dist, cam.dir));
 	cam.horiz = ft_vec3_kmult(2.0 * cam.w * cam.focus_dist, cam.u);
 	cam.vert = ft_vec3_kmult(2.0 * cam.h * cam.focus_dist, cam.v);
 	return (cam);
@@ -45,11 +61,12 @@ t_ray		ft_camera_ray(t_camera *cam, float x, float y)
 	t_vec3		offset;
 	t_vec3		tmp;
 
+	offset = (t_vec3){0.0, 0.0, 0.0};
 	tmp = ft_vec3_sum(cam->low_left, ft_vec3_kmult((x + 0.5) / (float)W_W,
 				cam->horiz));
 	tmp = ft_vec3_sum(tmp, ft_vec3_kmult((y + 0.5) / (float)W_H,
 				cam->vert));
-	rd = ft_vec3_kmult(cam->lens_radius, ft_random_unit());
+	rd = ft_vec3_kmult(cam->lens_radius, ft_random_unit_disk());
 	offset = ft_vec3_sum(ft_vec3_kmult(rd.x, cam->u), ft_vec3_kmult(rd.y, cam->v));
 	r.start = ft_vec3_sum(offset, cam->pos);
 	r.dir = ft_vec3_normalized(ft_vec3_sub(tmp, r.start));
@@ -59,18 +76,17 @@ t_ray		ft_camera_ray(t_camera *cam, float x, float y)
 void		ft_camera_transform(t_camera *cam)
 {
 	(void)cam;
-	/*cam->pos = ft_translate_vec3(cam->pos, cam->trans, 0);
-	cam->focus_dist = ft_vec3_norm(ft_rotate_vec3(cam->dir, cam->rot, 0));
-	cam->dir = ft_vec3_normalized(ft_rotate_vec3(cam->dir, cam->rot, 0));
-	cam->u = ft_vec3_normalized(ft_vec3_cross(cam->dir,
-				ft_rotate_vec3(ft_vec3(0.0, 1.0, 0.0), cam->rot, 0)));
-	cam->v = ft_vec3_cross(cam->u, cam->dir);
+	cam->pos = ft_translate_vec3(cam->pos, cam->trans, -1);
+	cam->dir = ft_vec3_normalized(ft_rotate_vec3(cam->dir, cam->rot, -1));
+	cam->u = ft_vec3_normalized(ft_vec3_cross(ft_rotate_vec3(ft_vec3(0.0, 1.0, 0.0), 
+					cam->rot, -1), cam->dir));
+	cam->v = ft_vec3_cross(cam->dir, cam->u);
 	cam->low_left = ft_vec3_sub(cam->pos,
 			ft_vec3_sum(ft_vec3_kmult(cam->h * cam->focus_dist,
 					cam->v), ft_vec3_kmult(cam->w * cam->focus_dist, cam->u)));
-	cam->low_left = ft_vec3_sum(cam->low_left, cam->dir);
+	cam->low_left = ft_vec3_sub(cam->low_left, ft_vec3_kmult(cam->focus_dist, cam->dir));
 	cam->horiz = ft_vec3_kmult(2.0 * cam->w * cam->focus_dist, cam->u);
 	cam->vert = ft_vec3_kmult(2.0 * cam->h * cam->focus_dist, cam->v);
 	cam->rot = (t_vec3){0.0, 0.0, 0.0};
-	cam->trans = (t_vec3){0.0, 0.0, 0.0};*/
+	cam->trans = (t_vec3){0.0, 0.0, 0.0};
 }
