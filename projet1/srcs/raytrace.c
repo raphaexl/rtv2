@@ -52,37 +52,44 @@ static void		ft_floor_object(t_texture *t, t_object *o, t_material *m,
 	}
 }
 
+static	int	ft_illuminate(t_light *l, t_intersect *in)
+{
+ 	t_vec3		dist;
+	
+	if (l->type)
+	{
+	dist = ft_vec3_sub(l->pos, in->p);
+	if (ft_vec3_dot(in->n, dist) <= 0.0f)
+		return (0);
+	in->t = sqrt(ft_vec3_dot(dist, dist));
+ 	if (in->t <= 0.0f)
+		return (0);
+	in->ray_light = (t_ray){in->p, ft_vec3_kmult(1.0 / in->t, dist)};
+	}
+	else
+	{
+	if (ft_vec3_dot(in->n, l->dir) <= 0.0f)
+		return (0);
+	in->t = INFINITY;
+	t_vec3	po = ft_vec3_sum(in->p, ft_vec3_kmult(1e-4, in->n));
+	in->ray_light = (t_ray){po, l->dir};	
+	}
+	return (1);
+}
+
 static t_col3	ft_light(t_scene *s, t_intersect *in, t_material m, t_col3 c)
 {
 	t_light		*p;
-	t_vec3		dist;
+	t_vec3		dir;
 
 	p = s->light;
 	ft_floor_object(s->earth, in->current, &m, in->p);
 	while (p)
 	{
-		if (p->type == POINT)
+		if (!ft_illuminate(p, in))
 		{
-			dist = ft_vec3_sub(p->pos, in->p);
-			if ((ft_vec3_dot(in->n, dist) <= 0.0f))
-			{
-				p = p->next;
-				continue;
-			}
-			if ((in->t = sqrt(ft_vec3_dot(dist, dist))) && in->t <= 0.01)
-			{
-				p = p->next;
-				continue;
-			}
-			in->ray_light = (t_ray){in->p, ft_vec3_kmult(1.0 / in->t, dist)};
-			printf("t : %.2f x: %.2f\ty:%.2f\tz:%.2f\n", in->t, in->ray_light.dir.x,in->ray_light.dir.y, in->ray_light.dir.z);
-		}
-		else
-		{
-			in->t = 1e8;//INFINITY;
-			t_vec3	po = ft_vec3_sum(in->p, ft_vec3_kmult(1e-0, in->n));
-			in->ray_light = (t_ray){po, p->dir};
-			printf("t : %.2f x: %.2f\ty:%.2f\tz:%.2f\n", in->t, in->ray_light.dir.x,in->ray_light.dir.y, in->ray_light.dir.z);
+			p = p->next;
+			continue;
 		}
 		if (!ft_scene_intersectl(s, in))
 			c = ft_col3_sum(c, ft_trace(in, &m, p, &s->ambiant));
@@ -101,7 +108,7 @@ t_col3			ft_ray_trace(t_scene *s, t_intersect *in, int depth)
 		return (s->bg_color);
 	if (depth >= MAX_DEPTH)
 		return (c);
-	c = ft_col3_sum(c, ft_light(s, in, in->current->material, c));
+	/*c = ft_col3_sum(c, ft_light(s, in, in->current->material, c));
 	if (in->current->material.reflection > 1.0 && ft_metal_sc(in, &c))
 		c = ft_col3_mult(c, ft_ray_trace(s, in, depth + 1));
 	else if (in->current->material.refraction > 0.0)
@@ -109,11 +116,13 @@ t_col3			ft_ray_trace(t_scene *s, t_intersect *in, int depth)
 		if (ft_dielectric_sc(in, &c, in->current->material.refraction))
 			c = ft_col3_mult(c, ft_ray_trace(s, in, depth + 1));
 	}
-	else if (in->current->material.reflection > 0.0)
+	else */if (in->current->material.reflection > 0.0)
 	{
 		ft_reflect_light(in);
 		c = ft_col3_sum(c, ft_col3_kmult(in->current->material.reflection,
 					ft_ray_trace(s, in, depth + 1)));
 	}
+else
+c = ft_col3_sum(c, ft_light(s, in, in->current->material, c));
 	return (c);
 }

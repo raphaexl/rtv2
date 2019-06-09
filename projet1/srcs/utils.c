@@ -12,6 +12,11 @@
 
 #include "../includes/rt.h"
 
+float	ft_modulo(float f)
+{
+	return (f - floor(f));
+}
+
 float	ft_clamp(float min, float max, float val)
 {
 	return (fmax(min, fmin(max, val)));

@@ -29,9 +29,11 @@
 # include "libft.h"
 # include "structs.h"
 
+float		ft_modulo(float f);
 float		ft_rand48(void);
 float		ft_atof(const char *str);
 float		ft_clamp(float min, float max, float val);
+void		ft_fresnel(t_vec3 v, t_vec3 n, float ior, float *kr);
 t_vec3		ft_reflect(t_vec3 i, t_vec3 n);
 int			ft_refract(t_vec3 i, t_vec3 n, float eta, t_vec3 *r);
 int			ft_lambertian_sc(t_intersect *in, t_col3 *att);

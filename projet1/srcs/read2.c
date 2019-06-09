@@ -171,7 +171,6 @@ t_light			*ft_light_read(int fd)
 		}
 		else if (!ft_strcmp("SPHERICAL", line) || (!ft_strcmp("POINT", line)))
 		{
-			write(1, "Hi\n", 3);
 			l.type = POINT;
 			l.pos = ft_vec3_read(fd);
 		}

@@ -48,6 +48,65 @@ t_vec3	ft_reflect(t_vec3 v, t_vec3 n)
 	tmp = ft_vec3_kmult(2.0 * ft_vec3_dot(v, n), n);
 	return (ft_vec3_sub(v, tmp));
 }
+/*
+int 	ft_refract(t_vec3 v, t_vec3 n, float ior, t_vec3 *r)
+{
+	t_vec3	tmp;
+	float	cosi, etai, etat, eta;
+	float	k;
+
+	etai = 1.0;
+	etat = ior;
+	cosi = ft_clamp(-1.0, 1.0, ft_vec3_dot(v, n));
+	if (cosi > 0.0f)
+		cosi = -cosi;
+	else
+	{
+	//swap
+	float sp = etai;
+	etai = etat;
+	etat = sp;
+	n = ft_vec3_kmult(-1.0, n);
+	}
+	eta = etai / etat;
+	k = 1.0 - eta * eta * (1.0 - cosi * cosi);
+	if (k < 0.0f)
+		return (0);
+	tmp = ft_vec3_kmult(eta, v);
+	*r = ft_vec3_sum(tmp, ft_vec3_kmult(eta * cosi - sqrtf(k), n));
+	return (1);
+}*/
+
+void		ft_fresnel(t_vec3 v, t_vec3 n, float ior, float *kr)
+{
+	t_vec3	tmp;
+	float	cosi, etai, etat;
+	float	discr;
+	float	sint;
+
+	etai = 1.0f;
+	etat = ior;
+	cosi = ft_clamp(-1.0, 1.0, ft_vec3_dot(v, n));
+	if (cosi > 0.0f)
+	{
+	float sp = etai;
+	etai = etat;
+	etat = sp;
+	n = ft_vec3_kmult(-1.0, n);
+	}
+	sint = etai / etat * sqrtf(fmax(0.0f, 1.0 - cosi * cosi));
+	if (sint >= 1.0f)
+		*kr = 1.0f;	
+	else
+	{
+	float cost = sqrtf(fmax(0.0f, 1));
+	cosi = fabs(cosi);
+	float	rs = ((etat * cosi) - (etai * cost)) / ((etat * cosi) + (etai * cost));
+	float	rp = ((etai * cosi) - (etat * cost)) / ((etai * cosi) + (etat * cost));
+	*kr = (rs * rs + rp * rp) / 2.0;
+	}
+}
+
 
 int		ft_refract(t_vec3 v, t_vec3 n, float ni_over_nt, t_vec3 *r)
 {

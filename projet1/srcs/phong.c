@@ -54,8 +54,9 @@ t_col3			ft_trace(t_intersect *in, t_material *m, t_light *l, t_col3 *a)
 	t_col3	c;
 
 	c = (t_col3){0.0, 0.0, 0.0};
-	intensity = l->color;//ft_col3_kmult(l->intensity, l->color);
+	intensity = ft_col3_kmult(l->intensity, l->color);
 	c = ft_ambient_light(&m->diffuse, a);
+//	lambert = ft_clamp(0, 1.0, ft_vec3_dot(in->ray_light.dir, in->n));
 	lambert = ft_vec3_dot(in->ray_light.dir, in->n);
 	c = ft_col3_sum(c, ft_diffuse_light(&intensity, &m->diffuse, lambert));
 	return (ft_col3_sum(c, ft_phong_shading(in, m, &intensity)));
