@@ -22,6 +22,11 @@ float	ft_clamp(float min, float max, float val)
 	return (fmax(min, fmin(max, val)));
 }
 
+t_vec3	ft_mix(t_vec3 v1, t_vec3 v2, float mix)
+{
+	return (ft_vec3_sum(ft_vec3_kmult(1.0 - mix, a), ft_vec3_kmult(mix, b)));
+}
+
 float	ft_rand48(void)
 {
 	static int	initialized = 0;
