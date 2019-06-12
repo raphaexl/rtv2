@@ -61,6 +61,8 @@ int			ft_sphere_compute(t_object *p, t_intersect *in)
 	in->n = ft_rotate_vec3(in->n, p->rotate, 0);
 	in->n = ft_scale_vec3(in->n, p->scale, -1);
 	in->n = ft_vec3_normalized(in->n);
+	in->n = ft_vec3_dot(in->n, r.dir) < 0 ? in->n : ft_vec3_kmult(-1, in->n);
+	in->f = ft_vec3(p->color.red, p->color.green, p->color.blue);
 	return (1);
 }
 

@@ -102,7 +102,7 @@ t_material	ft_material_read(int fd)
 	int			i;
 
 	i = -1;
-	material.diffuse.blue = 1.0;
+	material.type = DIFFUSE;
 	material.diffuse = ft_col3_read(fd);
 	material.specular = ft_col3_read(fd);
 	if (ft_get_next_line(fd, &line) == 1 && line)

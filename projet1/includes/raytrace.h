@@ -23,6 +23,11 @@ typedef enum	e_type
 	PARALLELOGRAM, RING, ELLIPSOID, PARABOLOID
 }				t_type;
 
+typedef enum	e_mtype
+{
+	DIFFUSE, SPECULAR, REFRACTIVE
+}				t_mtype;
+
 typedef enum	e_ltype
 {
 	DISTANT, POINT
@@ -61,6 +66,7 @@ typedef struct s_perlin
 
 typedef struct	s_material
 {
+	t_mtype		type;
 	t_col3		diffuse;
 	t_col3		specular;
 	float		spec_pow;
@@ -205,7 +211,9 @@ typedef struct	s_intersect
 	t_ray		ray;
 	t_ray		ray_light;
 	t_vec3		n;
+	t_vec3		n1;
 	t_vec3		p;
+	t_vec3		f;
 	float		t;
 	t_object	*current;
 }				t_intersect;
