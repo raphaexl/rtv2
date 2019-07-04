@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/27 19:25:02 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/06/03 21:40:51 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/06/15 16:08:34 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ typedef struct	s_vec3
 	float	y;
 	float	z;
 }				t_vec3;
+
+typedef struct	s_vec2
+{
+	float	x;
+	float	y;
+}				t_vec2;
 
 t_vec3		ft_vec3(float x, float y, float z);
 t_vec3		ft_vec3_sum(t_vec3 a, t_vec3 b);

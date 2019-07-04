@@ -6,7 +6,7 @@
 #    By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/06 17:03:06 by ebatchas          #+#    #+#              #
-#    Updated: 2019/06/07 16:16:17 by ebatchas         ###   ########.fr        #
+#    Updated: 2019/06/09 13:27:02 by ebatchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,6 +82,7 @@ SRC=$(SRCDIR)/ft_atoi.c\
 	$(SRCDIR)/ft_strsplit.c\
 	$(SRCDIR)/ft_strtrim.c\
 	$(SRCDIR)/ft_itoa.c\
+	$(SRCDIR)/ft_itoa_base.c\
 	$(SRCDIR)/ft_power.c\
 	$(SRCDIR)/ft_swap.c\
 	$(SRCDIR)/ft_get_next_line.c
@@ -149,6 +150,7 @@ OBJ=$(LIBDIR)/ft_atoi.o\
 	$(LIBDIR)/ft_strsplit.o\
 	$(LIBDIR)/ft_strtrim.o\
 	$(LIBDIR)/ft_itoa.o\
+	$(LIBDIR)/ft_itoa_base.o\
 	$(LIBDIR)/ft_power.o\
 	$(LIBDIR)/ft_swap.o\
 	$(LIBDIR)/ft_get_next_line.o

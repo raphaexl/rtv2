@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:49:52 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/06/08 22:14:01 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/07/03 16:14:27 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@
 # include "libft.h"
 # include "structs.h"
 
-float		ft_modulo(float f);
 float		ft_rand48(void);
 float		ft_atof(const char *str);
+char		*ft_itoaf(long double nb, int precision);
 float		ft_clamp(float min, float max, float val);
-t_vec3		ft_mix(t_vec3 v1, t_vec3 v2, float mix);
-void		ft_fresnel(t_vec3 v, t_vec3 n, float ior, float *kr);
 t_vec3		ft_reflect(t_vec3 i, t_vec3 n);
 int			ft_refract(t_vec3 i, t_vec3 n, float eta, t_vec3 *r);
 int			ft_lambertian_sc(t_intersect *in, t_col3 *att);
@@ -46,6 +44,9 @@ int			ft_tab_len(char **tab);
 void		ft_print_error(char *str);
 void		ft_sdl_error(void);
 t_font		ft_font(const char *message, const char *font_file, int font_size);
+
+Uint32		ft_color_sdl(SDL_Color c);
+SDL_Color	ft_sdl_color(Uint32 c);
 
 void		ft_env_load_all(t_env *e);
 void		ft_env_load_images(t_env *env);
@@ -60,7 +61,10 @@ int			ft_mouse_inside(int mousex, int mousey, SDL_Rect *r);
 void		ft_env_display_text(SDL_Renderer *r, char *m);
 void		ft_draw(t_env *e);
 void		ft_env_quit(t_env *e);
+void		ft_env_draw(t_env *e);
 
+void		ft_event_key_down(SDL_Event *e, t_input *in);
+int			ft_event_edition(t_input *in);
 t_vec3		ft_rotate_x(t_vec3 r, float angle);
 t_vec3		ft_rotate_y(t_vec3 r, float angle);
 t_vec3		ft_rotate_z(t_vec3 r, float angle);
@@ -94,6 +98,7 @@ t_object	*ft_triangle_read(int fd);
 t_object	*ft_parallelogram_read(int fd);
 t_object	*ft_ellipsoid_read(int fd);
 t_object	*ft_paraboloid_read(int fd);
+t_object	*ft_mesh_read(int fd);
 t_light		*ft_light_read(int fd);
 void		ft_scene_read(t_scene *s, int fd);
 void		ft_parse_file(t_scene *s, int	fd);
@@ -167,6 +172,14 @@ int			ft_paraboloid_intersect(t_paraboloid *pa, t_ray *r, float *t);
 int			ft_paraboloid_compute(t_object *parab, t_intersect *in);
 t_vec3		ft_normal_paraboloid(t_paraboloid *pa, t_vec3 p);
 
+int			ft_mesh_load(t_mesh *m, char *file_name);
+void		ft_print_mesh(t_mesh *m);
+void		ft_mesh_clean(t_mesh *m);
+t_object	*ft_mesh_new(void);
+int			ft_mesh_intersect(t_mesh *m, t_ray *r, float *t);
+int			ft_mesh_compute(t_object *mesh, t_intersect *in);
+t_vec3		ft_normal_mesh(t_mesh *m, t_vec3 p);
+
 t_texture	*ft_texture_new(char *img);
 void		ft_sphere_uv(t_vec3 p, float *u, float *v);
 t_col3		ft_texture_image(t_texture *t, float u, float v);
@@ -203,8 +216,60 @@ void		ft_render_draw_img(SDL_Renderer *r, SDL_Texture *i, t_point p,\
 		SDL_Rect *pos);
 Uint32		ft_get_pixels(SDL_Surface *s, int x, int y);
 void		ft_put_pixels(SDL_Surface *s, int x, int y, Uint32 pixel);
-void		ft_save_pixels(Uint32 *pixels, int w, int h);
+void		ft_save_bmp_pixels(Uint32 *pixels, int w, int h);
+void		ft_save_png_pixels(Uint32 *pixels, int w, int h);
 Uint32		*ft_load_pixels(char *file_name, int *w, int *h);
 void		ft_sdl_error(void);
 void		ft_sdl_quit(t_ptr *ptr);
+
+t_filter	*ft_filter_new(int w, int h, t_ftype type);
+void		ft_filter_convolution(t_filter *f);
+void		ft_filter_blur(t_filter *f);
+void		ft_filter_blur2(t_filter *f);
+void		ft_filter_gaussian_blur(t_filter *f);
+void		ft_filter_gaussian_blur2(t_filter *f);
+void		ft_filter_motion_blur(t_filter *f);
+void		ft_filter_edge(t_filter *f);
+void		ft_filter_edge1(t_filter *f);
+void		ft_filter_edge2(t_filter *f);
+void		ft_filter_edge3(t_filter *f);
+void		ft_filter_edge4(t_filter *f);
+void		ft_filter_emboss(t_filter *f);
+void		ft_filter_emboss2(t_filter *f);
+void		ft_filter_sharpen(t_filter *f);
+void		ft_filter_sharpen2(t_filter *f);
+void		ft_filter_sharpen3(t_filter *f);
+
+void		ft_filter_apply(t_filter *f, Uint32	*pixels);
+
+int			ft_handle_input(t_input *in);
+void		ft_inspector_object(t_inspector *ins, t_object *o);
+void		ft_inspector_apply(t_inspector *ins, t_object **o);
+void		ft_inspector_init(t_ptr *ptr, t_inspector *ins);
+void		ft_inspector_display(t_ptr *ptr, t_inspector *ins);
+int			ft_inspector_update_event(t_inspector *ins, t_input *in);
+void		ft_inspector_clean(t_inspector *ins);
+
+void		ft_no_object_select(t_inspector *ins);
+t_widget	ft_widget_new(t_ptr *ptr, Uint32 c);
+t_widget	*ft_widget_create(t_ptr *ptr, Uint32 c);
+void		ft_widget_draw(t_ptr *ptr, t_widget *w, int x, int y);
+int			ft_mouse_on_widget(t_widget *w, int x, int y);
+void		ft_widget_clean(t_widget *w);
+
+t_button	ft_button_new(t_ptr *ptr, Uint32 c, Uint32 c2, const char *text);
+t_button	*ft_button_create(t_ptr *ptr, Uint32 c, Uint32 c2, const char *text);
+void		ft_button_draw(t_ptr *ptr, t_button *w, int x, int y);
+int			ft_mouse_on_button(t_button *w, int x, int y);
+void		ft_button_clean(t_button *b);
+
+t_entry		ft_entry_new(t_ptr *ptr, Uint32 c, Uint32 c2, const char *m);
+t_entry		*ft_entry_create(t_ptr *ptr, Uint32 c, Uint32 c2, const char *m);
+void		ft_entry_draw(t_ptr *ptr, t_entry *w, int x, int y);
+void		ft_entry_process(t_entry *w, t_input *in);
+void		ft_entry_clean(t_entry *b);
+int			ft_mouse_on_entry(t_entry *w, int x, int y);
+int			ft_process_entry(t_entry *e, t_input *in);
+int			ft_event_entry_pressed(t_entry *e, t_input *in);
+int			ft_gui_event(t_entry *entry, t_input *in);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 11:55:38 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/06/04 15:48:16 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/07/03 16:11:31 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,30 @@
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
-# define MAX_DEPTH 5
-# define NB_OPTIONS 25
+# define MAX_DEPTH 10
+# define NB_OPTIONS 22
+# define N_PROPERTIES 10
+# define N_VIEW1 5
+# define N_VIEW4 1
+# define DEFAULT_W1 100
+# define DEFAULT_W 50
+# define DEFAULT_H 25
+# define DEFAULT_FSIZE 10
+# define DEFAULT_NSIZE 5
+# define DEFAULT_FONT ("data/fonts/Roboto-Condensed.ttf")
+# define ANGELINA_FONT ("data/fonts/angelina.TTF")
+# define BLACK	0x000000FF
+# define RED	0xFF0000FF
+# define GREEN	0x00FF00FF
+# define BLUE   0x0000FFFF
+# define YELLOW	0x00FFFF00
+# define NB_INSPECT 2
 # define DELTA_TRANS 1.5
 # define DELTA_SCALE 1.0
 # define DELTA_ANGLE 2
 # define DEG_TO_RAD(x) ((x) * (M_PI / 180.0))
+# define MAX(a, b) ((a) < (b) ? (b) : (a))
+# define MIN(a, b) ((a) < (b) ? (a) : (b))
 # define EQN_EPS 1e-9
 # define IS_ZERO(x) ((x) > -EQN_EPS && (x) < EQN_EPS)
 # ifndef CBRT
@@ -76,9 +94,9 @@ typedef struct	s_quartic
 typedef	enum	e_opt
 {
 	NNE = 0, NEW_SPHERE, NEW_CONE, NEW_CYLINDRE, NEW_BOX, NEW_PLANE, NEW_DISK,
-	NEW_TORUS, NEW_CUBE, EDIT_TRACE, RAY_TRACE, PATH_TRACE, ZOOM, MOVE_X,
-	MOVE_Z, MOVE_Y, ROTATE_X, ROTATE_Z, ROTATE_Y, SCALE_X, SCALE_Z, SCALE_Y,
-	RESIZE, SAVE, DELETE
+	NEW_TORUS, NEW_CUBE, NEW_TRIANGLE, NEW_PARALLELOGRAM, NEW_RING, NEW_ELLIPSOID, 
+	NEW_PARABOLOID, NEW_MESH, DELETE, EDIT_TRACE, RAY_TRACE, PATH_TRACE, S_BMP, S_PNG,
+	ZOOM
 }				t_options;
 
 typedef	struct	s_font

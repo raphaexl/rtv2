@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 10:47:27 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/06/08 22:12:08 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/07/02 20:24:40 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,30 @@
 
 typedef enum	e_type
 {
-	NONE = 0, SPHERE, CONE, CYLINDRE, BOX, PLANE, DISK, TORUS, CUBE, TRIANGLE,
-	PARALLELOGRAM, RING, ELLIPSOID, PARABOLOID
+	NONE = 0, SPHERE, CONE, CYLINDER, BOX, PLANE, DISK, TORUS, CUBE, TRIANGLE,
+	PARALLELOGRAM, RING, ELLIPSOID, PARABOLOID, MESH
 }				t_type;
-
-typedef enum	e_mtype
-{
-	DIFFUSE, SPECULAR, REFRACTIVE
-}				t_mtype;
 
 typedef enum	e_ltype
 {
 	DISTANT, POINT
 }				t_ltype;
+
+typedef enum	e_ftype
+{
+	NOFILTER, CONVOLUTION, BLUR, BLUR2, GAUSSIAN_BLUR,  GAUSSIAN_BLUR2, MOTION_BLUR,
+	EDGE, EDGE2, EDGE3, SHARPEN, EMBOSS, EMBOSS2, MEAN_AND_MEDIAN
+}				t_ftype;
+
+typedef enum	e_mtype
+{
+	DIFFUSE, SPECULAR, METAL, DIELECTRIC
+}				t_mtype;
+
+typedef	enum	e_itype
+{
+		DEFAULT, EDITING
+}				t_itype;
 
 typedef struct	s_ray
 {
@@ -56,6 +67,16 @@ typedef struct	s_texture
 	Uint32	*data;
 }				t_texture;
 
+typedef	struct	s_filter
+{
+	t_ftype		type;
+	int			w;
+	int			h;
+	float		**filter;
+	float		factor;
+	float		bias;
+}				t_filter;
+
 typedef struct s_perlin
 {
 	t_vec3		*ranvec;
@@ -67,6 +88,7 @@ typedef struct s_perlin
 typedef struct	s_material
 {
 	t_mtype		type;
+	float		albedo[4];
 	t_col3		diffuse;
 	t_col3		specular;
 	float		spec_pow;
@@ -169,6 +191,21 @@ typedef struct	s_paraboloid
 	t_vec3		c;
 }				t_paraboloid;
 
+typedef struct	s_mesh
+{
+	char		*name;
+	int			n_faces;
+	int			verts_index_array_size;
+	int			max_verts_index;
+	int			num_tris;
+	int			verts_array_size;
+	int			*face_index;
+	int			*verts_index;
+	t_vec3		*verts;
+	t_vec3		*normals;
+	t_vec2		*st;
+}				t_mesh;
+
 typedef union	s_union
 {
 	t_sphere		sphere;
@@ -184,6 +221,7 @@ typedef union	s_union
 	t_ring			ring;
 	t_ellipsoid		ellipse;
 	t_paraboloid	parab;
+	t_mesh			mesh;
 }				t_union;
 
 typedef	struct	s_o
@@ -211,9 +249,7 @@ typedef struct	s_intersect
 	t_ray		ray;
 	t_ray		ray_light;
 	t_vec3		n;
-	t_vec3		n1;
 	t_vec3		p;
-	t_vec3		f;
 	float		t;
 	t_object	*current;
 }				t_intersect;
@@ -229,6 +265,7 @@ typedef	struct	s_scene
 	t_object	*obj;
 	t_light		*light;
 	t_texture	*earth;
+	t_filter	*filter;
 	t_col3		(*ft_rtv1)(struct s_scene *, t_intersect *, int);
 }				t_scene;
 #endif

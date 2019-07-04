@@ -6,7 +6,7 @@
 #    By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/28 22:15:58 by ebatchas          #+#    #+#              #
-#    Updated: 2019/06/07 16:15:39 by ebatchas         ###   ########.fr        #
+#    Updated: 2019/07/02 13:52:34 by ebatchas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,74 +33,103 @@ ifeq	($(UNAME_S),Darwin)
 	CFLAGS += -F ./frameworks
 endif
 
-SRC=$(SRCDIR)/main.c\
-	$(SRCDIR)/input.c\
-	$(SRCDIR)/event.c\
-	$(SRCDIR)/save.c\
-	$(SRCDIR)/process.c\
-	$(SRCDIR)/verbose.c\
-	$(SRCDIR)/error.c\
-	$(SRCDIR)/utils.c\
-	$(SRCDIR)/draw.c\
-	$(SRCDIR)/load.c\
-	$(SRCDIR)/env.c\
-	$(SRCDIR)/read.c\
-	$(SRCDIR)/read2.c\
-	$(SRCDIR)/parse.c\
-	$(SRCDIR)/parse_tools.c\
-	$(SRCDIR)/object.c\
-	$(SRCDIR)/light.c\
-	$(SRCDIR)/scene.c\
-	$(SRCDIR)/sphere.c\
-	$(SRCDIR)/cone.c\
-	$(SRCDIR)/cylindre.c\
-	$(SRCDIR)/ring.c\
-	$(SRCDIR)/plane.c\
-	$(SRCDIR)/disque.c\
-	$(SRCDIR)/box.c\
-	$(SRCDIR)/cube.c\
-	$(SRCDIR)/torus.c\
-	$(SRCDIR)/triangle.c\
-	$(SRCDIR)/parallelogram.c\
-	$(SRCDIR)/ellipsoid.c\
-	$(SRCDIR)/paraboloid.c\
-	$(SRCDIR)/camera.c\
-	$(SRCDIR)/vector1.c\
-	$(SRCDIR)/vector2.c\
-	$(SRCDIR)/matrix.c\
-	$(SRCDIR)/roation.c\
-	$(SRCDIR)/transform.c\
-	$(SRCDIR)/quadric.c\
-	$(SRCDIR)/cubic.c\
-	$(SRCDIR)/quartic.c\
-	$(SRCDIR)/color.c\
-	$(SRCDIR)/raytrace.c\
-	$(SRCDIR)/pathtrace.c\
-	$(SRCDIR)/phong.c\
-	$(SRCDIR)/texture.c\
-	$(SRCDIR)/perlin.c\
-	$(SRCDIR)/turbulence.c\
-	$(SRCDIR)/compute.c\
-	$(SRCDIR)/sdl.c
+SRC=$(SRCDIR)/main/main.c\
+	$(SRCDIR)/env/compute.c\
+	$(SRCDIR)/env/save.c\
+	$(SRCDIR)/env/process.c\
+	$(SRCDIR)/env/verbose.c\
+	$(SRCDIR)/env/load.c\
+	$(SRCDIR)/env/env.c\
+	$(SRCDIR)/sdl/input.c\
+	$(SRCDIR)/sdl/input2.c\
+	$(SRCDIR)/sdl/event.c\
+	$(SRCDIR)/sdl/sdl.c\
+	$(SRCDIR)/gui/gui.c\
+	$(SRCDIR)/gui/entry.c\
+	$(SRCDIR)/gui/entry2.c\
+	$(SRCDIR)/gui/inspector.c\
+	$(SRCDIR)/gui/selection.c\
+	$(SRCDIR)/gui/apply.c\
+	$(SRCDIR)/gui/widget.c\
+	$(SRCDIR)/gui/button.c\
+	$(SRCDIR)/tools/error.c\
+	$(SRCDIR)/tools/utils.c\
+	$(SRCDIR)/tools/tools.c\
+	$(SRCDIR)/raytrace/draw.c\
+	$(SRCDIR)/parser/read.c\
+	$(SRCDIR)/parser/read2.c\
+	$(SRCDIR)/parser/parse.c\
+	$(SRCDIR)/parser/parse_tools.c\
+	$(SRCDIR)/mesh/load_mesh.c\
+	$(SRCDIR)/mesh/mesh.c\
+	$(SRCDIR)/linked/object.c\
+	$(SRCDIR)/linked/light.c\
+	$(SRCDIR)/raytrace/scene.c\
+	$(SRCDIR)/objects/sphere.c\
+	$(SRCDIR)/objects/cone.c\
+	$(SRCDIR)/objects/cylindre.c\
+	$(SRCDIR)/objects/ring.c\
+	$(SRCDIR)/objects/plane.c\
+	$(SRCDIR)/objects/disque.c\
+	$(SRCDIR)/objects/box.c\
+	$(SRCDIR)/objects/cube.c\
+	$(SRCDIR)/objects/torus.c\
+	$(SRCDIR)/objetcs/triangle.c\
+	$(SRCDIR)/objects/parallelogram.c\
+	$(SRCDIR)/objects/ellipsoid.c\
+	$(SRCDIR)/objetcs/paraboloid.c\
+	$(SRCDIR)/raytrace/camera.c\
+	$(SRCDIR)/geometry/vector1.c\
+	$(SRCDIR)/geometry/vector2.c\
+	$(SRCDIR)/geometry/matrix.c\
+	$(SRCDIR)/geometry/color.c\
+	$(SRCDIR)/math/roation.c\
+	$(SRCDIR)/math/transform.c\
+	$(SRCDIR)/math/quadric.c\
+	$(SRCDIR)/math/cubic.c\
+	$(SRCDIR)/math/quartic.c\
+	$(SRCDIR)/raytrace/raytrace.c\
+	$(SRCDIR)/raytrace/pathtrace.c\
+	$(SRCDIR)/raytrace/phong.c\
+	$(SRCDIR)/texture/texture.c\
+	$(SRCDIR)/filters/filter.c\
+	$(SRCDIR)/filters/blur.c\
+	$(SRCDIR)/filters/edge.c\
+	$(SRCDIR)/filters/sharpen.c\
+	$(SRCDIR)/filters/emboss.c\
+	$(SRCDIR)/texture/perlin.c\
+	$(SRCDIR)/texture/turbulence.c
 
 OBJ=$(LIBDIR)/main.o\
-	$(LIBDIR)/input.o\
-	$(LIBDIR)/event.o\
+	$(LIBDIR)/load.o\
+	$(LIBDIR)/env.o\
+	$(LIBDIR)/compute.o\
 	$(LIBDIR)/save.o\
 	$(LIBDIR)/process.o\
 	$(LIBDIR)/verbose.o\
+	$(LIBDIR)/input.o\
+	$(LIBDIR)/input2.o\
+	$(LIBDIR)/event.o\
+	$(LIBDIR)/sdl.o\
+	$(LIBDIR)/gui.o\
+	$(LIBDIR)/entry.o\
+	$(LIBDIR)/entry2.o\
+	$(LIBDIR)/widget.o\
+	$(LIBDIR)/button.o\
+	$(LIBDIR)/inspector.o\
+	$(LIBDIR)/selection.o\
+	$(LIBDIR)/apply.o\
 	$(LIBDIR)/error.o\
 	$(LIBDIR)/utils.o\
-	$(LIBDIR)/draw.o\
-	$(LIBDIR)/load.o\
-	$(LIBDIR)/env.o\
+	$(LIBDIR)/tools.o\
 	$(LIBDIR)/read.o\
 	$(LIBDIR)/read2.o\
 	$(LIBDIR)/parse.o\
 	$(LIBDIR)/parse_tools.o\
+	$(LIBDIR)/load_mesh.o\
+	$(LIBDIR)/mesh.o\
 	$(LIBDIR)/object.o\
 	$(LIBDIR)/light.o\
-	$(LIBDIR)/scene.o\
 	$(LIBDIR)/sphere.o\
 	$(LIBDIR)/cone.o\
 	$(LIBDIR)/cylindre.o\
@@ -114,12 +143,19 @@ OBJ=$(LIBDIR)/main.o\
 	$(LIBDIR)/parallelogram.o\
 	$(LIBDIR)/ellipsoid.o\
 	$(LIBDIR)/paraboloid.o\
+	$(LIBDIR)/scene.o\
+	$(LIBDIR)/draw.o\
 	$(LIBDIR)/camera.o\
 	$(LIBDIR)/raytrace.o\
 	$(LIBDIR)/pathtrace.o\
 	$(LIBDIR)/phong.o\
 	$(LIBDIR)/texture.o\
 	$(LIBDIR)/perlin.o\
+	$(LIBDIR)/filter.o\
+	$(LIBDIR)/blur.o\
+	$(LIBDIR)/edge.o\
+	$(LIBDIR)/sharpen.o\
+	$(LIBDIR)/emboss.o\
 	$(LIBDIR)/turbulence.o\
 	$(LIBDIR)/vector1.o\
 	$(LIBDIR)/vector2.o\
@@ -129,9 +165,7 @@ OBJ=$(LIBDIR)/main.o\
 	$(LIBDIR)/quadric.o\
 	$(LIBDIR)/cubic.o\
 	$(LIBDIR)/quartic.o\
-	$(LIBDIR)/color.o\
-	$(LIBDIR)/compute.o\
-	$(LIBDIR)/sdl.o
+	$(LIBDIR)/color.o
 
 NAME=rt
 
@@ -149,7 +183,7 @@ endif
 
 $(LIBDIR)/%.o:$(HEADDIR)/%.h
 
-$(LIBDIR)/%.o:$(SRCDIR)/%.c
+$(LIBDIR)/%.o:$(SRCDIR)/*/%.c
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 .PHONY:clean fclean

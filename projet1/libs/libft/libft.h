@@ -6,14 +6,14 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/06 01:15:41 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/06/07 16:14:20 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/06/09 14:27:54 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # define BUFF_SIZE 100000
-
+# define ABS(n) ((n) < (0) ? (-n) : (n))
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
@@ -55,6 +55,9 @@ char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_itoa(int n);
+int					ft_size_base(long long n, int base);
+char				*ft_strcapitalize(char *str);
+char				*ft_itoa_base(long long n, int base);
 int					ft_putchar(int c);
 void				ft_putstr(char const *str);
 void				ft_putendl(char const *s);
