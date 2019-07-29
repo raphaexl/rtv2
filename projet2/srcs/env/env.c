@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:52:38 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/07/18 09:54:55 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/07/29 17:19:30 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,13 @@ void	ft_env_draw(t_env *e)
 	while (--i >= 0)
 		SDL_RenderCopy(e->ptr.renderer, e->menu.img[i], NULL, &e->menu.pos[i]);
 	ft_env_display_text(e->ptr.renderer,
-			e->selected ? e->selected->name : "NONE");
+			e->selected ? e->selected->name : "NONE");/* In default mode we just draw inspector elements and raytrace with ft_draw if thread are set, or render if not*/
 	if (e->in.mode == DEFAULT)
 	{
-		ft_inspector_apply(&e->inspector, &e->selected);
+		ft_inspector_apply(&e->inspector, &e->selected);/* draw the UI */
 		ft_lview_apply(&e->lview, &e->select);
 		ft_cview_apply(&e->cview, &e->s.cam);
+	/* Raytracing*/
 		if (e->optimize)
 			ft_draw(e);
 		else
@@ -109,6 +110,7 @@ void	ft_env_draw(t_env *e)
 	ft_cview_display(&e->ptr, &e->cview);
 //	ft_memcpy(e->pixels, e->s.earth->data, sizeof(Uint32) * e->s.earth->w *  e->s.earth->h);
 //	ft_filter_apply(e->s.filter, e->pixels);
+/* render the pixels after ray tracing */
 	ft_update_renderer(&e->ptr, e->pixels);
 	SDL_RenderPresent(e->ptr.renderer);
 }

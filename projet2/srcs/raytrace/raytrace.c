@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:56:51 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/07/27 09:40:38 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/07/29 17:32:35 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ static	int	ft_illuminate(t_light *l, t_intersect *in)
 {
 	t_vec3		dist;
 
-	if (l->type)
+	if (l->type) // POINT LIGHT
 	{
-		dist = ft_vec3_sub(l->pos, in->p);
+		dist = ft_vec3_sub(l->pos, in->p); /*  */ 
 		if (ft_vec3_dot(in->n, dist) <= 0.0f)
 			return (0);
 		in->t = sqrt(ft_vec3_dot(dist, dist));
@@ -102,7 +102,7 @@ static	int	ft_illuminate(t_light *l, t_intersect *in)
 			return (0);
 		in->ray_light = (t_ray){in->p, ft_vec3_kmult(1.0 / in->t, dist)};
 	}
-	else
+	else // if DIRECTIONAL LIGHT
 	{
 		if (ft_vec3_dot(in->n, l->dir) <= 0.0f)
 			return (0);
@@ -110,6 +110,7 @@ static	int	ft_illuminate(t_light *l, t_intersect *in)
 		t_vec3	po = ft_vec3_sum(in->p, ft_vec3_kmult(1e-4, in->n));
 		in->ray_light = (t_ray){po, l->dir};	
 	}
+	//else if // AREA OF LIGHT
 	return (1);
 }
 
@@ -119,8 +120,8 @@ static t_col3	ft_light(t_scene *s, t_intersect *in, t_material m, t_col3 c)
 
 	p = s->light;
 	ft_floor_object(s->earth, in->current, &m, in->p);
-	while (p)
-	{
+	while (p) /* loop througt lights */
+ 	{
 		if (!ft_illuminate(p, in))
 		{
 			p = p->next;
@@ -139,52 +140,26 @@ t_col3			ft_ray_trace(t_scene *s, t_intersect *in, int depth)
 
 	c = (t_col3){0.0, 0.0, 0.0};
 	in->t = INFINITY;
-	if (depth >= MAX_DEPTH)
+	if (depth >= MAX_DEPTH)/* max depth for ray reflection */
 		return (c);
-	if (!ft_scene_intersect(s, in))
-		return (s->bg_color);/*(s->ft_bg_color(s, in, 0));*/
-	c = ft_col3_sum(c, ft_light(s, in, in->current->material, c));
-/*	if (in->current->material.chess == 2)
-		c = ft_col3_kmult(ft_perlin_turbulence(in->current->material.perlin, c, 5), c);*/
-	if ((in->current->material.albedo[2] > 1.0) && ft_metal_sc(in, &c))
+	if (!ft_scene_intersect(s, in)) /* loop through objects and get the closest intersection , return background color if no intersection */
+		return (s->bg_color);	
+	c = ft_col3_sum(c, ft_light(s, in, in->current->material, c));/* loop through lights */
+	/* reflection*/
+	if ((in->current->material.albedo[2] > 1.0) && ft_metal_sc(in, &c)) /* > 1.0 object is a metal */ 
 		c = ft_col3_mult(c, ft_ray_trace(s, in, depth + 1));
-	else if (in->current->material.albedo[3] > 0.0)
+	/* refraction*/
+	else if (in->current->material.albedo[3] > 0.0) /* objcect is dielectric*/
 	{
 		if (ft_dielectric_sc(in, &c, in->current->material.albedo[3]))
 			c = ft_col3_mult(c, ft_ray_trace(s, in, depth + 1));
 	}
 	else if (in->current->material.albedo[2] > 0.0)
 	{
-		ft_reflect_light(in);
+		ft_reflect_light(in);/* normal reflection*/
 		c = ft_col3_sum(c, ft_col3_kmult(in->current->material.albedo[2],
 					ft_ray_trace(s, in, depth + 1)));
 	}
 	return (c);
 }
-/*
-t_col3			ft_ray_trace(t_scene *s, t_intersect *in, int depth)
-{
-	t_col3		c;
 
-	c = (t_col3){0.0, 0.0, 0.0};
-	in->t = INFINITY;
-	if (depth >= MAX_DEPTH)
-		return (c);
-	if (!ft_scene_intersect(s, in))
-		return (s->bg_color);
-	if ((in->current->material.type == METAL) && ft_metal_sc(in, &c))
-	{
-		ft_reflect_light(in);
-		c = ft_col3_sum(c, ft_col3_kmult(in->current->material.albedo[2],
-					ft_ray_trace(s, in, depth + 1)));
-		c = ft_col3_mult(c, ft_ray_trace(s, in, depth + 1));
-	}
-	else if (in->current->material.type == DIELECTRIC)
-	{
-		if (ft_dielectric_sc(in, &c, in->current->material.albedo[3]))
-			c = ft_col3_mult(c, ft_ray_trace(s, in, depth + 1));
-	}
-	else
-		c = ft_col3_sum(c, ft_light(s, in, in->current->material, c));
-	return (c);
-}*/
