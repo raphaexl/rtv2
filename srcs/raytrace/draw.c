@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:52:26 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 10:22:36 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:29:26 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static	int		ft_rend(void *ptr)
 					g->s.c.green, g->s.c.blue, 1.0 / g->s.nb_samples);
 		}
 	}
-	return (ft_apply_convolution(g));
+	return (0);
 }
 
 void			ft_draw(t_env *e)

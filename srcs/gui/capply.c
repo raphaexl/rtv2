@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 18:30:02 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/22 14:45:51 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 12:53:40 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ void	ft_cview_apply(t_cview *view, t_camera *c)
 	at.x = ft_atof(view->v[1].e[0].mes);
 	at.y = ft_atof(view->v[1].e[1].mes);
 	at.z = ft_atof(view->v[1].e[2].mes);
-	*c = ft_camera_new(pos, at, ft_vec3(0.0, 1.0, 0.0), 60.0);
+	*c = ft_camera_new(pos, at, ft_vec3(0.0, 1.0f, 0.0), 60.0);
 }

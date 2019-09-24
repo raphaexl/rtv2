@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 19:34:56 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/21 21:20:40 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 13:02:03 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,33 @@ t_rtsplit	ft_parse_process_split(char *str, char c1, char c2, char car)
 	split.tab = ft_strsplit(tmp, car);
 	free(tmp);
 	return (split);
+}
+
+char		*ft_rtstrsub(char const *s, unsigned int start, size_t len)
+{
+	char	*dest;
+	size_t	i;
+	size_t	j;
+
+	dest = NULL;
+	if (s)
+	{
+		if ((dest = (char *)malloc((len + 1))))
+		{
+			i = 0;
+			while (!ft_isalpha(s[i]))
+				i++;
+			start += (i - 1);
+			j = 0;
+			while (j < len && s[i])
+			{
+				dest[j++] = s[i + start];
+				i++;
+			}
+			dest[j] = '\0';
+		}
+	}
+	return (dest);
 }
 
 int			ft_rtstrequal(char *s1, char *s2)

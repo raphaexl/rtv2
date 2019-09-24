@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 22:37:37 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/21 14:11:03 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:21:22 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		ft_motion_blur(t_env *env)
 	filter[10] = 0.222222;
 	filter[11] = 0.444444;
 	ft_motion_blur_12(filter);
-	ft_convolute(env, filter, 5, 7);
+	ft_process_filter(env, filter, 5, 7);
 	free(filter);
 }
 
@@ -67,6 +67,6 @@ void		ft_gauss_blur(t_env *env)
 	filter[6] = 1;
 	filter[7] = 2;
 	filter[8] = 1;
-	ft_convolute(env, filter, 3, 16);
+	ft_process_filter(env, filter, 3, 16);
 	free(filter);
 }

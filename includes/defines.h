@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 11:55:38 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 12:19:53 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:08:59 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define DELTA_SCALE 1.0
 # define DELTA_ANGLE 2
 # define DEG_TO_RAD(x) ((x) * (M_PI / 180.0))
+# define RAD_TO_DEG(x) ((x) * (180.0 / M_PI))
 # define MAX(a, b) ((a) < (b) ? (b) : (a))
 # define MIN(a, b) ((a) < (b) ? (a) : (b))
 # define EQN_EPS 1e-9

@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 16:45:32 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 12:48:16 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 13:07:17 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,5 @@ t_col3				ft_image_texturing(t_object *o, t_vec3 pos)
 		ft_torus_uv(&o->e.torus, ft_vec3(0.0, 0.0, 0.), pos, &uv);
 	else if (o->type == BOX)
 		ft_box_uv(&o->e.box, ft_vec3(0.0, 0.0, 0.0), pos, &uv);
-	//return (ft_get_texel(o->material.texture, uv.u, uv.v));
-	//ft_putendl("Should work");
 	return (ft_texture_image(o->material.texture, uv.u, uv.v));
 }

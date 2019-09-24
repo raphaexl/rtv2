@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:49:52 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 12:49:54 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 12:52:11 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void		ft_create_coordinate_system(t_vec3 n, t_vec3 *nt, t_vec3 *nb);
 t_vec3		ft_uniform_sample_hemisphere(float r1, const float r2);
 char		*ft_parse_process_str(char *str, char start, char end);
 t_rtsplit	ft_parse_process_split(char *str, char c1, char c2, char split);
+char		*ft_rtstrsub(char const *s, unsigned int start, size_t len);
 int			ft_rtstrequal(char *s1, char *s2);
 t_mesh		ft_default_mesh(void);
 int			ft_mesh_load(t_mesh *m, const char *file_name);
@@ -122,6 +123,10 @@ void		ft_parse_file(t_scene *s, int	fd);
 int			ft_parse_process_camera(t_scene *s, char *str);
 int			ft_parse_process_background(t_scene *s, char *str);
 int			ft_parse_process_scene(t_scene *s, char *str);
+char		**ft_default_env_map(void);
+int			ft_parsing_envmap_1(char *m[7], char *str);
+void		ft_parsing_envmap(t_scene *s, char **str);
+int			ft_parse_process_envmap(t_scene *s, char *str);
 void		ft_scene_init(t_scene *s, char *const input_file);
 void		ft_render(t_scene *s, Uint32 *pix);
 void		ft_scene_clear(t_scene *s);
@@ -209,7 +214,6 @@ void		ft_light_add_back(t_light **lst, t_ltype type);
 void		ft_light_clean(t_light **lst);
 t_camera	ft_camera_new(t_vec3 eye, t_vec3 look_at, t_vec3 up, float a);
 t_ray		ft_camera_ray(t_camera *cam, float x, float y);
-void		ft_camera_transform(t_camera *cam);
 void		ft_update_event(t_input *in);
 int			ft_sdl_init(t_ptr *ptr, const char *title);
 int			ft_update_renderer(t_ptr *ptr, Uint32 *pixel);
@@ -301,15 +305,14 @@ int			ft_mesh_triangulate(t_mesh *m, t_obj *obj);
 t_col3		ft_get_col3(t_pixel color);
 t_pixel		ft_scale_convert_col3(t_col3 c, double t);
 t_pixel		ft_get_color(int color);
-void		ft_convolute(t_env *env, double *filter, int size, int den);
-int			ft_apply_convolution(t_env *e);
+void		ft_process_filter(t_env *env, double *filter, int size, int den);
+int			ft_filter(t_env *e);
 void		ft_sobel(t_env *env);
 void		ft_grey(t_env *e);
 void		ft_motion_blur(t_env *env);
 void		ft_gauss_blur(t_env *env);
 void		ft_emboss(t_env *env);
 void		ft_sharpen(t_env *env);
-void		ft_draw_borders(t_env *e);
 char		**ft_default_env_map(void);
 t_cubemap	*ft_cubemap_init(char	*m[6], int srgb, int exposed);
 t_col3		ft_read_texture(t_col3 *tab, t_uv uv, int w, int h);

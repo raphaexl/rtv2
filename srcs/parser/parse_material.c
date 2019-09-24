@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 08:19:48 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 12:29:55 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 13:01:40 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_texture	*ft_material_texture(char *line)
 {
 	char		**tab;
 	t_texture	*tex;
-	
+
 	if (!(tab = ft_strsplit(line, ' ')) || ft_tab_len(tab) != 3)
 		ft_print_error("material invalid texture setting texture : img.bmp!!");
 	if (ft_isalpha(*tab[1]))

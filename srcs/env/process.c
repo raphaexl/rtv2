@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:56:02 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 12:09:09 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 12:59:57 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ int			ft_process_event(t_env *e, t_input *in)
 	if (!initialized && (initialized = 1))
 		return (1);
 	if (ft_prev_update(e, in))
-		return (1);
-	if (ft_env_update_camera(&e->s.cam, in))
 		return (1);
 	else if (in->mouse[SDL_BUTTON_RIGHT] && ft_update_options(&e->menu, in, 1))
 	{

@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:54:42 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/22 17:04:58 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:43:04 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void		ft_parse_file(t_scene *s, int fd)
 		else if ((index = ft_parse_process_background(s, &line[i])))
 			i += index;
 		else if ((index = ft_parse_process_scene(s, &line[i])))
+			i += index;
+		else if ((index = ft_parse_process_envmap(s, &line[i])))
 			i += index;
 	}
 	free(line);

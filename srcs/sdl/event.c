@@ -6,53 +6,11 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:53:03 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 10:54:23 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 12:50:47 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/rt.h"
-
-static int	ft_camera_rotate(t_camera *cam, t_input *in)
-{
-	int		ret;
-
-	ret = 0;
-	if (in->keys[SDL_SCANCODE_W] && (ret = 1))
-		cam->rot.x += 5.212;
-	else if (in->keys[SDL_SCANCODE_S] && (ret = 1))
-		cam->rot.x -= 5.212;
-	else if (in->keys[SDL_SCANCODE_Q] && (ret = 1))
-		cam->rot.z += 5.212;
-	else if (in->keys[SDL_SCANCODE_E] && (ret = 1))
-		cam->rot.z -= 5.212;
-	else if (in->keys[SDL_SCANCODE_LEFT] && (ret = 1))
-		cam->rot.y += 5.212;
-	else if (in->keys[SDL_SCANCODE_RIGHT] && (ret = 1))
-		cam->rot.y -= 5.212;
-	return (ret);
-}
-
-int			ft_env_update_camera(t_camera *cam, t_input *in)
-{
-	int		ret;
-
-	ret = 0;
-	ret = ft_camera_rotate(cam, in);
-	if (in->keys[SDL_SCANCODE_Z] && (ret = 1))
-		cam->trans = ft_vec3_sum(cam->trans, ft_vec3_kmult(-2.5, cam->v));
-	if (in->keys[SDL_SCANCODE_X] && (ret = 1))
-		cam->trans = ft_vec3_sum(cam->trans, ft_vec3_kmult(2.5, cam->v));
-	if (in->keys[SDL_SCANCODE_A] && (ret = 1))
-		cam->trans = ft_vec3_sum(cam->trans, ft_vec3_kmult(-2.5, cam->u));
-	if (in->keys[SDL_SCANCODE_D] && (ret = 1))
-		cam->trans = ft_vec3_sum(cam->trans, ft_vec3_kmult(2.5, cam->u));
-	if (in->keys[SDL_SCANCODE_UP] && (ret = 1))
-		cam->trans = ft_vec3_sum(cam->trans, ft_vec3_kmult(2.5, cam->dir));
-	if (in->keys[SDL_SCANCODE_DOWN] && (ret = 1))
-		cam->trans = ft_vec3_sum(cam->trans, ft_vec3_kmult(-2.5, cam->dir));
-	ft_camera_transform(cam);
-	return (ret);
-}
 
 void		ft_env_select_object(t_env *e, int x, int y)
 {

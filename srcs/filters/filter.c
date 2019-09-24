@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 14:14:22 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 10:38:20 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:37:55 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	ft_apply_filter(t_convolution conv)
 		ft_scale_convert_col3(auxcol, (double)1 / conv.den).col;
 }
 
-void		ft_convolute(t_env *env, double *filter, int size,
+void		ft_process_filter(t_env *env, double *filter, int size,
 		int den)
 {
 	t_convolution	conv;
@@ -60,7 +60,7 @@ void		ft_convolute(t_env *env, double *filter, int size,
 	free(conv.aux);
 }
 
-int			ft_apply_convolution(t_env *e)
+int			ft_filter(t_env *e)
 {
 	if (e->s.filter == NO_FILTER)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:57:06 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/23 12:33:20 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 13:01:04 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,5 @@ t_object		*ft_parse_ring(t_object *o, char **str)
 	}
 	o->e.ring.radius2 = o->e.ring.radius * o->e.ring.radius;
 	o->material = ft_material_read(str);
-	//printf("type : %d", o->material.type);
-	//exit(0);
 	return (ft_object_new(RING, o));
 }

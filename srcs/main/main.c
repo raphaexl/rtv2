@@ -6,7 +6,7 @@
 /*   By: ebatchas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:53:56 by ebatchas          #+#    #+#             */
-/*   Updated: 2019/09/22 14:59:17 by ebatchas         ###   ########.fr       */
+/*   Updated: 2019/09/24 16:29:51 by ebatchas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,13 @@ static void	ft_env_draw(t_env *e)
 	{
 		ft_inspector_apply(&e->inspector, &e->selected);
 		if (e->optimize)
-		{
-			ft_putendl("Called to redraw");
 			ft_draw(e);
-		}
 		else
 			ft_render(&e->s, e->pixels);
+		ft_filter(e);
 	}
-	ft_cview_apply(&e->cview, &e->s.cam);
+	else
+		ft_cview_apply(&e->cview, &e->s.cam);
 	ft_inspector_display(&e->ptr, &e->inspector);
 	ft_cview_display(&e->ptr, &e->cview);
 	ft_update_renderer(&e->ptr, e->pixels);
